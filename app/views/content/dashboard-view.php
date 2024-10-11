@@ -1,21 +1,3 @@
-<style>
-  .full-height {
-    min-height: 100vh;
-  }
-  .sidebar {
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    overflow-y: auto;
-  }
-  .main-content {
-    margin-left: 250px; /* Adjust this value based on your sidebar width */
-  }
-</style>
-
-
-
 <div class="container-fluid p-0">
   <div class="row g-0 full-height">
     <!-- Sidebar -->
