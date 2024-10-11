@@ -18,7 +18,26 @@
     <?php require_once "./app/views/inc/head.php"; ?>
 </head>
 <body>
-    <?php require_once "./app/views/inc/script.php"; ?>
+    <?php
+    use app\controllers\viewsController;
+
+/* si la vista existe carga la vista */
+    
+$viewsController= new viewsController();
+    $view=$viewsController->getViewsController($url[0]);
+
+    if($view=="welcome" || $view=="404"){
+        require_once "./app/views/content/".$view."-view.php";
+    }else{
+        require_once "./app/views/inc/navbar.php";
+        require_once $view;
+    }
+
+    require_once "./app/views/inc/script.php";
+
+
+
+    ?> 
 
     
 </body>

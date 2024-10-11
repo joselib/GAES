@@ -3,7 +3,7 @@
 
     class viewsModel{
         protected function getViewsModels($view){
-            $whiteList=["dashboard"];
+            $whiteList=["dashboard", "login"];
 
             if(in_array($view,$whiteList)){
                 if(is_file("./app/views/content/".$view."-view.php")){
