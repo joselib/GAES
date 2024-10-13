@@ -27,24 +27,24 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `usuario`
 --
 
-CREATE TABLE `usuario` (
-  `usuario_id` int(10) NOT NULL,
-  `usuario_nombre` varchar(70) COLLATE utf8_spanish2_ci NOT NULL,
-  `usuario_apellido` varchar(70) COLLATE utf8_spanish2_ci NOT NULL,
-  `usuario_email` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
-  `usuario_usuario` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
-  `usuario_clave` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
-  `usuario_foto` varchar(535) COLLATE utf8_spanish2_ci NOT NULL,
-  `usuario_creado` timestamp NOT NULL,
-  `usuario_actualizado` timestamp NOT NULL
+CREATE TABLE `users` (
+  `user_id` int(10) NOT NULL,
+  `user_name` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `user_lastname` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `user_email` varchar(80) COLLATE utf8_spanish2_ci NOT NULL,
+  `user_user` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `user_password` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
+  `user_photo` varchar(535) COLLATE utf8_spanish2_ci NOT NULL,
+  `user_created` timestamp NOT NULL,
+  `user_updated` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`usuario_id`, `usuario_nombre`, `usuario_apellido`, `usuario_email`, `usuario_usuario`, `usuario_clave`, `usuario_foto`, `usuario_creado`, `usuario_actualizado`) VALUES
-(1, 'Administrador', 'Principal', 'admin@admin.com', 'Administrador', '$2y$10$F0J8k.lFjgGAK6I/tcbhyuMKSaitXy8ENMSBVZWErIoA6.VSU8MQy', '', '2023-07-06 21:48:05', '2023-07-06 21:48:05');
+INSERT INTO `users` (`user_id`, `user_name`, `user_lastname`, `user_email`, `user_user`, `user_password`, `user_photo`, `user_created`, `user_updated`) VALUES
+(1, 'Admon', 'Primario', 'admon@gaes.com', 'Administrador', '$2y$10$F0J8k.lFjgGAK6I/tcbhyuMKSaitXy8ENMSBVZWErIoA6.VSU8MQy', '', '2024-05-01 21:48:05', '2024-05-01 21:48:05');
 
 --
 -- Índices para tablas volcadas
@@ -53,8 +53,8 @@ INSERT INTO `usuario` (`usuario_id`, `usuario_nombre`, `usuario_apellido`, `usua
 --
 -- Indices de la tabla `usuario`
 --
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`usuario_id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -63,8 +63,8 @@ ALTER TABLE `usuario`
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
-ALTER TABLE `usuario`
-  MODIFY `usuario_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `users`
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

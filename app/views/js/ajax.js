@@ -57,7 +57,7 @@ function alert_ajax(alert) {
             confirmButtonText: 'Aceptar'
         });
 
-    } else if (alert.type == "recargar") {
+    } else if (alert.type == "reload") {
 
         Swal.fire({
             icon: alert.icono,
@@ -70,7 +70,7 @@ function alert_ajax(alert) {
             }
         });
 
-    } else if (alert.type == "limpiar") {
+    } else if (alert.type == "clear") {
 
         Swal.fire({
             icon: alert.icono,
@@ -79,11 +79,11 @@ function alert_ajax(alert) {
             confirmButtonText: 'Aceptar'
         }).then((result) => {
             if (result.isConfirmed) {
-                document.querySelector(".FormularioAjax").reset();
+                document.querySelector(".FormAjax").reset();
             }
         });
 
-    } else if (alert.type == "redireccionar") {
+    } else if (alert.type == "redirection") {
         window.location.href = alert.url;
     }
 }

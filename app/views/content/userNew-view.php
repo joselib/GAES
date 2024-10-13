@@ -42,13 +42,13 @@
         <div class="row mb-3">
             <div class="col">
                 <div class="mb-3">
-                    <label for="user_password_1" class="form-label">Clave</label>
+                    <label for="user_password_1" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="user_password_1" name="user_password_1" pattern="[a-zA-Z0-9$@.-]{7,100}" maxlength="100" required>
                 </div>
             </div>
             <div class="col">
                 <div class="mb-3">
-                    <label for="user_password_2" class="form-label">Repetir clave</label>
+                    <label for="user_password_2" class="form-label">Repetir Contraseña</label>
                     <input type="password" class="form-control" id="user_password_2" name="user_password_2" pattern="[a-zA-Z0-9$@.-]{7,100}" maxlength="100" required>
                 </div>
             </div>
