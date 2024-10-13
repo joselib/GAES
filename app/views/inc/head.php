@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo APP_NAME; ?></title>
 
-                    <!--rutas de archivos de css js -->
+                    <!--files css  -->
 
 
 <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/bootstrap.css">
@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/sweetalert2.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-                    <!-- js -->
+                    <!-- files js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="<?php echo APP_URL; ?>app/views/js/sweetalert2.all.min.js" ></script>
