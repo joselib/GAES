@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
@@ -35,23 +35,24 @@ CREATE TABLE `users` (
   `user_user` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
   `user_password` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `user_photo` varchar(535) COLLATE utf8_spanish2_ci NOT NULL,
+  `birthdate` date NOT NULL,
   `user_created` timestamp NOT NULL,
   `user_updated` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `usuario`
+-- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_name`, `user_lastname`, `user_email`, `user_user`, `user_password`, `user_photo`, `user_created`, `user_updated`) VALUES
-(1, 'Admon', 'Primario', 'admon@gaes.com', 'Administrador', '$2y$10$F0J8k.lFjgGAK6I/tcbhyuMKSaitXy8ENMSBVZWErIoA6.VSU8MQy', '', '2024-05-01 21:48:05', '2024-05-01 21:48:05');
+INSERT INTO `users` (`user_id`, `user_name`, `user_lastname`, `user_email`, `user_user`, `user_password`, `user_photo`, `birthdate`, `user_created`, `user_updated`) VALUES
+(1, 'Admon', 'Primario', 'admon@gaes.com', 'Administrador', '$2y$10$F0J8k.lFjgGAK6I/tcbhyuMKSaitXy8ENMSBVZWErIoA6.VSU8MQy', '', '2024-05-01', '2024-05-01 21:48:05', '2024-05-01 21:48:05');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `usuario`
+-- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`);
@@ -61,7 +62,7 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
+-- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;

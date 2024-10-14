@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 use app\models\mainModel;
+use DateTime;
 
 class userController extends mainModel {
 
@@ -11,11 +12,13 @@ public function registerUserController() {
     $lastname = $this->cleanChain($_POST['user_lastname']);
     $user = $this->cleanChain($_POST['user_user']);
     $email = $this->cleanChain($_POST['user_email']);
+	$birthdate = $this->cleanChain($_POST['birthdate']);
     $password1 = $this->cleanChain($_POST['user_password_1']);
     $password2 = $this->cleanChain($_POST['user_password_2']);
 
-# Verifying required fields #
-    if (empty($name) || empty($lastname) || empty($user) || empty($password1) || empty($password2)) {
+
+	# Verifying required fields #
+    if (empty($name) || empty($lastname) || empty($user) || empty($birthdate) || empty($password1) || empty($password2)) {
         return json_encode([
             "type" => "simple",
             "title" => "Ocurrió un error inesperado",
@@ -29,7 +32,8 @@ public function registerUserController() {
         'lastname' => "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",
         'user' => "[a-zA-Z0-9]{4,20}",
         'password1' => "[a-zA-Z0-9$@.-]{7,100}",
-        'password2' => "[a-zA-Z0-9$@.-]{7,100}"
+        'password2' => "[a-zA-Z0-9$@.-]{7,100}",
+		'birthdate' => "\d{4}-\d{2}-\d{2}"
     ];
 
     foreach ($validations as $field => $pattern) {
@@ -66,7 +70,15 @@ public function registerUserController() {
 					return json_encode($alert);
 				}
             }
-
+				#check birthdate #
+			if (!$this->validateDate($birthdate)) {
+        			return json_encode([
+            	"type" => "simple",
+            	"title" => "Ocurrió un error inesperado",
+            	"text" => "El formato de la fecha de nacimiento no es válido",
+           	 "icon" => "error"
+       		]);
+    		}
             # check password and encrypt password #
             if($password1!=$password2){
             $alert = [
@@ -197,6 +209,11 @@ if (!empty($_FILES['user_photo']['name']) && $_FILES['user_photo']['size'] > 0) 
 					"marker_field"=>":Created",
 					"value_field"=>date("Y-m-d H:i:s")
 				],
+								[
+					"name_field"=>"birthdate",
+					"marker_field"=>":Birthdate",
+					"value_field"=> $birthdate
+				],
 				[
 					"name_field"=>"user_updated",
 					"marker_field"=>":Updated",
@@ -231,4 +248,16 @@ if (!empty($_FILES['user_photo']['name']) && $_FILES['user_photo']['size'] > 0) 
 			return json_encode($alert);
 
     }
+
+	// method Validation DATE
+
+private function validateDate($date, $format = 'Y-m-d') {
+    try {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) === $date;
+    } catch (\Exception $e) {
+        error_log("Error validating date: " . $e->getMessage());
+        return false;
+    }
+}
 }

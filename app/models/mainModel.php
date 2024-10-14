@@ -62,15 +62,16 @@
        			$query = "INSERT INTO $table (" . implode(',', array_column($data, 'name_field')) . ") VALUES (" . implode(',', array_column($data, 'marker_field')) . ")";
         		$sql = $this->conect()->prepare($query);
         		foreach ($data as $key) {
-            	$sql->bindParam($key["marker_field"], $key["value_field"]);
+            		$sql->bindParam($key["marker_field"], $key["value_field"]);
         		}
         		$sql->execute();
         		return $sql;
     		} catch (PDOException $e) {
-       			// Log the error or handle it appropriately
+        // Log the error
+        		error_log("Error en saveData: " . $e->getMessage());
         		return false;
     		}
-			}
+		}
 
         		/*---------- Select data function ----------*/
         public function selectData($type,$table,$field,$id){

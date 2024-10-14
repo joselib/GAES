@@ -38,7 +38,16 @@
                 </div>
             </div>
         </div>
+                <div class="row mb-3">
+                     <div class="col">
+                         <div class="mb-3">
+                    <label for="birthdate" class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+                     </div>
+                </div>
 
+
+                </div>
         <div class="row mb-3">
             <div class="col">
                 <div class="mb-3">
