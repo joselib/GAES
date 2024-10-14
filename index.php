@@ -20,6 +20,10 @@
 <body>
     <?php
     use app\controllers\viewsController;
+    use app\controllers\loginController;
+
+
+    $insLogin = new loginController();
 
 /* si la vista existe carga la vista */
     
