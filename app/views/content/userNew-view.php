@@ -5,7 +5,7 @@
 
 <div class="container py-6 d-flex justify-content-center">
 
-    <form class="" action="<?php echo APP_URL; ?>app/ajax/usersAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data" style="max-width: 600px; width: 100%;">
+    <form class="FormAjax" action="<?php echo APP_URL; ?>app/ajax/usersAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data" style="max-width: 600px; width: 100%;">
 
         <input type="hidden" name="module_user" value="registre">
 

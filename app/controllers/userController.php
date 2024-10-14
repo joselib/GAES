@@ -28,7 +28,8 @@ public function registerUserController() {
         'name' => "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",
         'lastname' => "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",
         'user' => "[a-zA-Z0-9]{4,20}",
-        'password1' => "[a-zA-Z0-9$@.-]{7,100}"
+        'password1' => "[a-zA-Z0-9$@.-]{7,100}",
+        'password2' => "[a-zA-Z0-9$@.-]{7,100}"
     ];
 
     foreach ($validations as $field => $pattern) {
@@ -80,7 +81,7 @@ public function registerUserController() {
             }
 
             # check user unice #
-                    $check_user = $this->executeConsultation("SELECT user_user FROM users WHERE user_user='$user'");
+                    $check_user = $this->executeConsultation("SELECT user_user FROM users WHERE user_user = ?", [$user]);
 					if($check_user->rowCount()>0){
                         $alert = [
                             "type" => "simple",

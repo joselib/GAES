@@ -23,12 +23,11 @@
 		}
 
         		/*---------- Function  exec consultation  ----------*/
-		protected function executeConsultation($consultation){
-			$sql=$this->conect()->prepare($consultation);
-			$sql->execute();
-			return $sql;
+		protected function executeConsultation($consultation, $params = []) {
+    		$sql = $this->conect()->prepare($consultation);
+    		$sql->execute($params);
+    		return $sql;
 		}
-
         		/*----------  Function clear chain  ----------*/
 		public function cleanChain($chain){
 
@@ -58,37 +57,20 @@
 
 
 		/*----------  Function to execute a prepared INSERT query  ----------*/
-		protected function saveData($table,$data){
-
-			$query="INSERT INTO $table (";
-
-			$C=0;
-			foreach ($data as $key){
-				if($C>=1){ $query.=","; }
-				$query.=$key["name_field"];
-				$C++;
+		protected function saveData($table, $data) {
+    		try {
+       			$query = "INSERT INTO $table (" . implode(',', array_column($data, 'name_field')) . ") VALUES (" . implode(',', array_column($data, 'marker_field')) . ")";
+        		$sql = $this->conect()->prepare($query);
+        		foreach ($data as $key) {
+            	$sql->bindParam($key["marker_field"], $key["value_field"]);
+        		}
+        		$sql->execute();
+        		return $sql;
+    		} catch (PDOException $e) {
+       			// Log the error or handle it appropriately
+        		return false;
+    		}
 			}
-			
-			$query.=") VALUES(";
-
-			$C=0;
-			foreach ($data as $key){
-				if($C>=1){ $query.=","; }
-				$query.=$key["marker_field"];
-				$C++;
-			}
-
-			$query.=")";
-			$sql=$this->conect()->prepare($query);
-
-			foreach ($data as $key){
-				$sql->bindParam($key["marker_field"],$key["value_field"]);
-			}
-
-			$sql->execute();
-
-			return $sql;
-		}
 
         		/*---------- Select data function ----------*/
         public function selectData($type,$table,$field,$id){
