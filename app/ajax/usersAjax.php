@@ -11,7 +11,7 @@
 		$insUser = new userController();
 
 		if($_POST['module_user']=="registre"){
-			echo $insUser->resgistreUserController();
+			echo $insUser->registerUserController();
 		}
 
 		if($_POST['module_user']=="eliminar"){

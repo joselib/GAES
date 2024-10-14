@@ -23,7 +23,7 @@
 		}
 
         		/*---------- Function  exec consultation  ----------*/
-		protected function ejecuteConsultation($consultation){
+		protected function executeConsultation($consultation){
 			$sql=$this->conect()->prepare($consultation);
 			$sql->execute();
 			return $sql;
@@ -79,7 +79,7 @@
 			}
 
 			$query.=")";
-			$sql=$this->conectar()->prepare($query);
+			$sql=$this->conect()->prepare($query);
 
 			foreach ($data as $key){
 				$sql->bindParam($key["marker_field"],$key["value_field"]);
