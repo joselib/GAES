@@ -260,4 +260,125 @@ private function validateDate($date, $format = 'Y-m-d') {
         return false;
     }
 }
+
+//user List controlller
+
+public function listUserController($page,$registration,$url,$search)
+{
+	$page = $this->cleanChain($page);
+	$registration = $this->cleanChain($registration);
+
+	$url = $this->cleanChain($url);
+	$url = APP_URL.$url."/";
+
+	$search = $this->cleanChain($search);
+	$tabla="";
+
+	$page= (isset($page) && $page>0) ? (int) $page : 1;
+	$init = ($page>0) ? (($page*$registration)-$registration) : 0 ;
+
+	if(isset($search) && $search!=""){
+
+		$consult_data="SELECT * FROM users WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1) AND (user_name LIKE '%$search%' OR user_lastname	LIKE '%$search%' OR user_email	LIKE '%$search%' OR user_user LIKE '%$search%' )) ORDER BY  user_name ASC LIMIT $init, $registration";
+		
+		$consult_total="SELECT COUNT(user_id) FROM users WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1) AND (user_name LIKE '%$search%' OR user_lastname	LIKE '%$search%' OR user_email	LIKE '%$search%' OR user_user LIKE '%$search%' )) ";
+	}else{
+
+		$consult_data="SELECT * FROM users WHERE user_id!='".$_SESSION['id']."' AND user_id!='1' ORDER BY  user_name ASC LIMIT $init, $registration";
+		
+		$consult_total="SELECT COUNT(user_id) FROM users WHERE user_id!='".$_SESSION['id']."' AND user_id!='1'";
+	}
+	$data= $this->executeConsultation($consult_data);
+	$data= $data->fetchALL();
+
+	$total= $this->executeConsultation($consult_total);
+	$total= (int) $total->fetchColumn();
+
+	$numberPages=ceil($total/$registration);
+$tabla.='
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Fecha de nacimiento</th>
+                        <th scope="col">Creado</th>
+                        <th scope="col">Actualizado</th>
+                        <th scope="col" colspan="3">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+		    ';
+
+		    if($total>=1 && $page<=$numberPages){
+				$count=$init+1;
+				$pag_init=$init+1;
+				foreach($data as $rows){
+					$tabla.='
+						   <tr>
+                    <td>'.$count.'</td>
+                    <td>'.$rows['user_name'].' '.$rows['user_lastname'].'</td>
+                    <td>'.$rows['user_user'].'</td>
+                    <td>'.$rows['user_email'].'</td>
+                    <td>'.date("d-m-Y",strtotime($rows['birthdate'])).'</td>
+                    <td>'.date("d-m-Y h:i:s A",strtotime($rows['user_created'])).'</td>
+                    <td>'.date("d-m-Y h:i:s A",strtotime($rows['user_updated'])).'</td>
+                    <td>
+                        <a href="'.APP_URL.'userPhoto/'.$rows['user_id'].'/" class="btn btn-info btn-sm">Foto</a>
+                    </td>
+                    <td>
+                        <a href="'.APP_URL.'userUpdate/'.$rows['user_id'].'/" class="btn btn-success btn-sm">Actualizar</a>
+                    </td>
+                    <td>
+                        <form class="FormAjax" action="'.APP_URL.'app/ajax/userAjax.php" method="POST" autocomplete="off">
+                            <input type="hidden" name="modulo_usuario" value="eliminar">
+                            <input type="hidden" name="user_id" value="'.$rows['user_id'].'">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+					';
+					$count++;
+				}
+				$pag_end=$count-1;
+			}else{
+				if($total>=1){
+					$tabla.='
+                <tr>
+                    <td colspan="10" class="text-center">
+                        <a href="'.$url.'1/" class="btn btn-primary btn-sm mt-4 mb-4">
+                            Haga clic acá para recargar el listado
+                        </a>
+                    </td>
+                </tr>
+					';
+				}else{
+					$tabla.='
+                <tr>
+                    <td colspan="10" class="text-center">
+                        No hay registros en el sistema
+                    </td>
+                </tr>
+					';
+				}
+			}
+
+			$tabla.='
+			 </tbody>
+            </table>
+        </div>';
+
+			### pagecion ###
+			if($total>=0 && $page<=$numberPages){
+				$tabla.='<p class="has-text-right">Mostrando usuarios <strong>'.$pag_init.'</strong> al <strong>'.$pag_end.'</strong> de un <strong>total de '.$total.'</strong></p>';
+
+				$tabla.=$this->pagerTables($page,$numberPages,$url,10);
+			}
+
+			return $tabla;
+		}
+
 }
