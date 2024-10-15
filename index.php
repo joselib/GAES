@@ -30,7 +30,7 @@
 $viewsController= new viewsController();
     $view=$viewsController->getViewsController($url[0]);
 
-    if($view=="welcome" || $view=="404"){
+    if($view=="welcome" || $view=="404" || $view=="login"){
         require_once "./app/views/content/".$view."-view.php";
     }else{
         require_once "./app/views/inc/navbar.php";
