@@ -108,7 +108,7 @@ btn_exit.addEventListener("click", function (e) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            let url = this.getAttribute("href");
+            let url = btn_exit.getAttribute("href");
             window.location.href = url;
         }
     });
