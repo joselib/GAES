@@ -33,6 +33,12 @@ $viewsController= new viewsController();
     if($view=="welcome" || $view=="404" || $view=="login"){
         require_once "./app/views/content/".$view."-view.php";
     }else{
+        // Close session validation if user log can see views
+        if((!isset($_SESSION['id']) || $_SESSION['id']=="") || (!isset($_SESSION['user']) || $_SESSION['user']=="")){
+            $insLogin->closeSessionControlller();
+            exit();
+        }
+
         require_once "./app/views/inc/navbar.php";
         require_once $view;
     }
