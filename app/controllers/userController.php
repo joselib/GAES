@@ -26,7 +26,7 @@ public function registerUserController() {
             "icon" => "error"
         ]);
     }
-// Verify Data Function (Regular Expression)
+ // Verify Data Function (Regular Expression)
     $validations = [
         'name' => "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",
         'lastname' => "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",
@@ -107,7 +107,7 @@ public function registerUserController() {
     		$img_dir="../views/photos/";
 
             #test if select a photo #
-if (!empty($_FILES['user_photo']['name']) && $_FILES['user_photo']['size'] > 0) {
+ if (!empty($_FILES['user_photo']['name']) && $_FILES['user_photo']['size'] > 0) {
     $img_dir = "../views/photos/";
     if (!is_dir($img_dir) && !mkdir($img_dir, 0755, true)) {
         return json_encode([
@@ -260,9 +260,7 @@ private function validateDate($date, $format = 'Y-m-d') {
         return false;
     }
 }
-
 //user List controlller
-
 public function listUserController($page,$registration,$url,$search)
 {
 	$page = $this->cleanChain($page);
@@ -295,7 +293,7 @@ public function listUserController($page,$registration,$url,$search)
 	$total= (int) $total->fetchColumn();
 
 	$numberPages=ceil($total/$registration);
-$tabla.='
+	$tabla.='
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
@@ -333,8 +331,8 @@ $tabla.='
                         <a href="'.APP_URL.'userUpdate/'.$rows['user_id'].'/" class="btn btn-success btn-sm">Actualizar</a>
                     </td>
                     <td>
-                        <form class="FormAjax" action="'.APP_URL.'app/ajax/userAjax.php" method="POST" autocomplete="off">
-                            <input type="hidden" name="modulo_usuario" value="eliminar">
+                        <form class="FormAjax" action="'.APP_URL.'app/ajax/usersAjax.php" method="POST" autocomplete="off">
+                            <input type="hidden" name="module_user" value="deleter">
                             <input type="hidden" name="user_id" value="'.$rows['user_id'].'">
                             <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                         </form>
@@ -379,6 +377,70 @@ $tabla.='
 			}
 
 			return $tabla;
-		}
+}
+
+//deleter user controlller
+public function deleterUserController() {
+
+	// Check if the user exists
+    if (!isset($_POST['user_id'])) {
+        $alert = [
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se recibió el ID del usuario a eliminar",
+            "icon" => "error"
+        ];
+        return json_encode($alert);
+    }
+
+    $id = $this->cleanChain($_POST['user_id']);
+
+    if ($id == 1) {
+        $alert = [
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se puede eliminar el USUARIO ADMIN del sistema",
+            "icon" => "error"
+        ];
+        return json_encode($alert);
+    }
+
+    // Check if the user exists
+    $data = $this->executeConsultation("SELECT * FROM users WHERE user_id = ?", [$id]);
+    if ($data->rowCount() <= 0) {
+        $alert = [
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "USUARIO no encontrado en el sistema",
+            "icon" => "error"
+        ];
+        return json_encode($alert);
+    }
+    $userData = $data->fetch();
+
+	  // Attempt to delete the user
+    $deleterUser = $this->executeConsultation("DELETE FROM users WHERE user_id = ?", [$id]);
+
+    if ($deleterUser->rowCount() == 1) {
+        if (!empty($userData['user_photo']) && is_file("../views/photos/" . $userData['user_photo'])) {
+            chmod("../views/photos/" . $userData['user_photo'], 0777);
+            unlink("../views/photos/" . $userData['user_photo']);
+        }
+        $alert = [
+            "type" => "reload",
+            "title" => "Usuario ELIMINADO",
+            "text" => "El usuario " . $userData['user_name'] . " " . $userData['user_lastname'] . " se ha ELIMINADO correctamente",
+            "icon" => "success"
+        ];
+    } else {
+        $alert = [
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se puede eliminar el USUARIO " . $userData['user_name'] . " " . $userData['user_lastname'] . " del sistema, por favor intente nuevamente",
+            "icon" => "error"
+        ];
+    }
+    return json_encode($alert);
+}
 
 }

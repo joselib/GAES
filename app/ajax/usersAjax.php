@@ -14,8 +14,8 @@
 			echo $insUser->registerUserController();
 		}
 
-		if($_POST['module_user']=="eliminar"){
-			echo $insUser->eliminarUsuarioControlador();
+		if($_POST['module_user']=="deleter"){
+			echo $insUser->deleterUserController();
 		}
 
 		if($_POST['module_user']=="actualizar"){

@@ -117,8 +117,8 @@
 			return $sql;
 		}
         		/*---------- Delete record function ----------*/
-        protected function deleteRegister($tabla,$field,$id){
-            $sql=$this->conectar()->prepare("DELETE FROM $tabla WHERE $field=:id");
+        protected function deleteRegister($table,$field,$id){
+            $sql=$this->conectar()->prepare("DELETE FROM $tabla WHERE = ?", [$id]);
             $sql->bindParam(":id",$id);
             $sql->execute();
             
