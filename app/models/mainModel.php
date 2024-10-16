@@ -74,47 +74,46 @@
 		}
 
         		/*---------- Select data function ----------*/
-        public function selectData($type,$table,$field,$id){
-			$type=$this->cleanChain($type);
-			$table=$this->cleanChain($table);
-			$field=$this->cleanChain($field);
-			$id=$this->cleanChain($id);
+public function selectData($type, $table, $field, $id){
+    $type = $this->cleanChain($type);
+    $table = $this->cleanChain($table);
+    $field = $this->cleanChain($field);
+    $id = $this->cleanChain($id);
 
-            if($type=="Only"){
-                $sql=$this->conectar()->prepare("SELECT * FROM $table WHERE $field=:ID");
-                $sql->bindParam(":ID",$id);
-            }elseif($type=="Normal"){
-                $sql=$this->conectar()->prepare("SELECT $field FROM $table");
-            }
-            $sql->execute();
+    if($type == "Only"){
+        $sql = $this->conect()->prepare("SELECT * FROM $table WHERE $field = :ID");
+        $sql->bindParam(":ID", $id);
+    } elseif($type == "Normal"){
+        $sql = $this->conect()->prepare("SELECT $field FROM $table");
+    }
+    $sql->execute();
 
-            return $sql;
-		}
+    return $sql;
+}
         		/*----------  Function to execute a prepared UPDATE query   ----------*/
-		protected function updateData($table,$data,$condition){
-			
-			$query="UPDATE $table SET ";
+protected function updateData($table, $data, $condition) {
+        $query = "UPDATE $table SET ";
 
-			$C=0;
-			foreach ($data as $key){
-				if($C>=1){ $query.=","; }
-				$query.=$key["name_field"]."=".$key["marker_field"];
-				$C++;
-			}
+        $C = 0;
+        foreach ($data as $key) {
+            if ($C >= 1) { $query .= ","; }
+            $query .= $key["name_field"] . "=:" . $key["name_field"];
+            $C++;
+        }
 
-			$query.=" WHERE ".$condition["field_condition"]."=".$condition["condition_marker"];
+        $query .= " WHERE " . $condition["field_condition"] . "=:condition_value";
 
-			$sql=$this->conectar()->prepare($query);
+        $sql = $this->conect()->prepare($query);
 
-			foreach ($data as $key){
-				$sql->bindParam($key["marker_field"],$key["value_field"]);
-			}
+        foreach ($data as $key) {
+        $sql->bindValue(":" . $key["name_field"], $key["value_field"]);
+    }
 
-			$sql->bindParam($condition["condition_marker"],$condition["condition_value"]);
+    $sql->bindValue(":condition_value", $condition["condition_value"]);
 
-			$sql->execute();
+    $sql->execute();
 
-			return $sql;
+    return $sql;
 		}
         		/*---------- Delete record function ----------*/
         protected function deleteRegister($table,$field,$id){

@@ -18,8 +18,8 @@
 			echo $insUser->deleterUserController();
 		}
 
-		if($_POST['module_user']=="actualizar"){
-			echo $insUser->actualizarUsuarioControlador();
+		if($_POST['module_user']=="update"){
+			echo $insUser->updateUserController();
 		}
 
 		if($_POST['module_user']=="eliminarFoto"){
