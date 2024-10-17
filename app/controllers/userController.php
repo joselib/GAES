@@ -639,4 +639,175 @@ public function updateUserController() {
         ]);
     }
 }
+    //Delete photo user
+public function deletePhotoUserController() {
+if (!isset($_POST['user_id'])) {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se recibió el ID del usuario",
+            "icon" => "error"
+        ]);
+    }
+
+    $id = $this->cleanChain($_POST['user_id']);
+
+    $data = $this->selectData("Only", "users", "user_id", $id);
+    if ($data->rowCount() <= 0) {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "USUARIO no encontrado en el sistema",
+            "icon" => "error"
+        ]);
+    }
+    $userData = $data->fetch();
+
+    if (is_file("../views/photos/" . $userData['user_photo'])) {
+        chmod("../views/photos/" . $userData['user_photo'], 0777);
+        if (unlink("../views/photos/" . $userData['user_photo'])) {
+            $update_data = [
+                ["name_field" => "user_photo", "value_field" => ""]
+            ];
+            $update_user = $this->updateData("users", $update_data, ["field_condition" => "user_id", "condition_value" => $id]);
+
+            if ($update_user->rowCount() == 1) {
+                return json_encode([
+                    "type" => "reload",
+                    "title" => "Foto eliminada",
+                    "text" => "La foto de perfil se ha eliminado correctamente",
+                    "icon" => "success"
+                ]);
+            } else {
+                return json_encode([
+                    "type" => "simple",
+                    "title" => "Ocurrió un error inesperado",
+                    "text" => "No se pudo eliminar la foto de perfil de la base de datos",
+                    "icon" => "error"
+                ]);
+            }
+        } else {
+            return json_encode([
+                "type" => "simple",
+                "title" => "Ocurrió un error inesperado",
+                "text" => "No se pudo eliminar la foto de perfil del servidor",
+                "icon" => "error"
+            ]);
+        }
+    } else {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se encontró la foto de perfil en el servidor",
+            "icon" => "error"
+        ]);
+    }
+}
+
+//update photo 
+
+public function upPhotoUserController() {
+if (!isset($_POST['user_id'])) {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se recibió el ID del usuario",
+            "icon" => "error"
+        ]);
+    }
+
+    $id = $this->cleanChain($_POST['user_id']);
+
+    $data = $this->selectData("Only", "users", "user_id", $id);
+    if ($data->rowCount() <= 0) {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "USUARIO no encontrado en el sistema",
+            "icon" => "error"
+        ]);
+    }
+    $userData = $data->fetch();
+
+    if (!isset($_FILES['user_photo'])) {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se ha seleccionado ninguna imagen",
+            "icon" => "error"
+        ]);
+    }
+
+    $img_dir = "../views/photos/";
+    $allowed_types = ['image/jpeg', 'image/png'];
+    $file_type = mime_content_type($_FILES['user_photo']['tmp_name']);
+    
+    if  (!in_array($file_type, $allowed_types)) {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "El tipo de archivo no está permitido",
+            "icon" => "error"
+        ]);
+    }
+
+    if (($_FILES['user_photo']['size'] / 1024) > 5120) {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "La imagen supera el tamaño máximo permitido (5MB)",
+            "icon" => "error"
+        ]);
+    }
+
+    $photo = str_ireplace(" ", "_", $userData['user_name']);
+    $photo = $photo . "_" . rand(0, 100);
+
+    switch($file_type) {
+        case 'image/jpeg':
+            $photo .= ".jpg";
+            break;
+        case 'image/png':
+            $photo .= ".png";
+            break;
+    }
+
+    chmod($img_dir, 0777);
+
+    if (move_uploaded_file($_FILES['user_photo']['tmp_name'], $img_dir . $photo)) {
+        $update_data = [
+            ["name_field" => "user_photo", "value_field" => $photo]
+        ];
+        $update_user = $this->updateData("users", $update_data, ["field_condition" => "user_id", "condition_value" => $id]);
+
+        if ($update_user->rowCount() == 1) {
+            if (!empty($userData['user_photo']) && is_file($img_dir . $userData['user_photo'])) {
+                chmod($img_dir . $userData['user_photo'], 0777);
+                unlink($img_dir . $userData['user_photo']);
+            }
+            return json_encode([
+                "type" => "reload",
+                "title" => "Foto actualizada",
+                "text" => "La foto de perfil se ha actualizado correctamente",
+                "icon" => "success"
+            ]);
+        } else {
+            unlink($img_dir . $photo);
+            return json_encode([
+                "type" => "simple",
+                "title" => "Ocurrió un error inesperado",
+                "text" => "No se pudo actualizar la foto de perfil en la base de datos",
+                "icon" => "error"
+            ]);
+        }
+    } else {
+        return json_encode([
+            "type" => "simple",
+            "title" => "Ocurrió un error inesperado",
+            "text" => "No se pudo subir la foto de perfil al servidor",
+            "icon" => "error"
+        ]);
+    }
+}
+
 }

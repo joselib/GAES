@@ -1,4 +1,4 @@
-<div class="container mb-4">
+<div class="container-fluid mb-6 text-center">
     <?php 
         $id = $insLogin->cleanChain($url[1]);
         if($id == $_SESSION['id']){ 
@@ -11,7 +11,7 @@
     <?php } ?>
 </div>
 
-<div class="container py-4">
+<div class="container py-8 d-flex justify-content-center">
     <?php
         include "./app/views/inc/btn_back.php";
         $data = $insLogin->selectData("Only","users","user_id",$id);

@@ -22,12 +22,12 @@
 			echo $insUser->updateUserController();
 		}
 
-		if($_POST['module_user']=="eliminarFoto"){
-			echo $insUser->eliminarFotoUsuarioControlador();
+		if($_POST['module_user']=="deletePhoto"){
+			echo $insUser->deletePhotoUserController();
 		}
 
-		if($_POST['module_user']=="actualizarFoto"){
-			echo $insUser->actualizarFotoUsuarioControlador();
+		if($_POST['module_user']=="upPhoto"){
+			echo $insUser->upPhotoUserController();
 		}
 		
 	}else{
