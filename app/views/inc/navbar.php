@@ -27,9 +27,6 @@
                 <li class="nav-item">
                   <a class="nav-link" href="<?php echo APP_URL; ?>userList/">Lista</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="<?php echo APP_URL; ?>userSearch/">Buscar</a>
-                </li>
               </ul>
             </li>
           </ul>
