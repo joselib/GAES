@@ -30,7 +30,7 @@
 $viewsController= new viewsController();
     $view=$viewsController->getViewsController($url[0]);
 
-    if($view=="welcome" || $view=="404" || $view=="login"){
+    if($view=="welcome" || $view=="404" || $view=="login" || $view=="403"){
         require_once "./app/views/content/".$view."-view.php";
     }else{
         // Close session validation if user log can see views

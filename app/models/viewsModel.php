@@ -15,8 +15,10 @@
         } else {
             $content = "404";
         }
-    } else {
-        $content = "404";
+    } elseif($view == "403") {
+        $content = "./app/views/content/403-view.php";
+    } else{
+         $content = "404";
     }
             return $content;
         }
